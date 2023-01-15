@@ -9,7 +9,7 @@ class Group(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -17,7 +17,9 @@ class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts',
+        User,
+        on_delete=models.CASCADE,
+        related_name='posts',
     )
     group = models.ForeignKey(
         Group,
@@ -29,21 +31,30 @@ class Post(models.Model):
     )
     image = models.ImageField(upload_to='posts/', null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
 class Comment(models.Model):
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments',
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments',
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
     )
     text = models.TextField()
     created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True,
+        'Дата добавления',
+        auto_now_add=True,
+        db_index=True,
     )
+
+    def __str__(self) -> str:
+        return self.text
 
 
 class Follow(models.Model):
@@ -63,3 +74,6 @@ class Follow(models.Model):
     class Meta:
         verbose_name_plural = 'Подписки'
         verbose_name = 'подписка'
+
+    def __str__(self) -> str:
+        return f'{self.user} подписался на {self.following}'
