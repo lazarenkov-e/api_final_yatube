@@ -52,7 +52,10 @@ class FollowSerializer(serializers.ModelSerializer):
             ),
         ]
 
-    def validate_following(self, following: str) -> str:
+    def validate_following(
+        self,
+        following: SlugRelatedField
+    ) -> SlugRelatedField:
         if self.context.get('request').user == following:
             raise serializers.ValidationError('Нельзя подписаться на себя!')
         return following
